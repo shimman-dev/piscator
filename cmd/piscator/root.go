@@ -27,5 +27,6 @@ func Execute() error {
 		fmt.Fprintf(os.Stderr, "Whoops. There was an error while executing your CLI '%s'", err)
 		os.Exit(1)
 	}
-	return rootCmd.Execute()
+
+	return nil
 }
