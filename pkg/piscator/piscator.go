@@ -3,7 +3,6 @@ package piscator
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"net/url"
@@ -116,7 +115,7 @@ func GetRepos(name string, isOrg, isPrivate, isForked, makeFile bool) (string, e
 	}
 
 	if makeFile {
-		err = ioutil.WriteFile("repos.json", jsonData, 0644)
+		err = json.NewDecoder(res.Body).Decode(&repos)
 		if err != nil {
 			return "", err
 		}
