@@ -29,6 +29,7 @@ var castCmd = &cobra.Command{
 		res, err := piscator.GetRepos(name, isOrgBool, isPrivateBool, isForkedBool, makeFileBool)
 		if err != nil {
 			fmt.Println(err)
+			return
 		}
 		fmt.Println(res)
 	},

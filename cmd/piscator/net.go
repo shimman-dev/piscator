@@ -28,7 +28,8 @@ var netCmd = &cobra.Command{
 		makeFileBool, _ = cmd.PersistentFlags().GetBool("makeFile")
 		res, err := piscator.GetRepos(name, isOrgBool, isPrivateBool, isForkedBool, makeFileBool)
 		if err != nil {
-			fmt.Println("Errors: %s", err)
+			fmt.Printf("Errors: %s", err)
+			return
 		}
 		isVerbose, _ = cmd.PersistentFlags().GetBool("verbose")
 		piscator.CloneReposFromJson(res, name, 5, isVerbose)
