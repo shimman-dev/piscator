@@ -17,10 +17,15 @@ import (
 	"github.com/briandowns/spinner"
 )
 
+// Repo is a struct for a GitHub repository
+type Repo struct {
+	Name string `json:"name"`
+	URL  string `json:"html_url"`
+}
+
 // RepoModel is the struct for a GitHub repository
 type RepoModel struct {
-	Url     string `json:"html_url"`
-	Name    string `json:"name"`
+	Repo           // embed Repo struct
 	Lang    string `json:"language"`
 	Fork    bool   `json:"fork"`
 	Private bool   `json:"private"`
@@ -92,30 +97,14 @@ func GetRepos(name string, isOrg, isPrivate, isForked, makeFile bool) (string, e
 	filteredRepos := []RepoModel{}
 	if isForked {
 		for _, repo := range repos {
-			if repo.Name != "" && repo.Url != "" {
-				filteredRepo := RepoModel{
-					Name:    repo.Name,
-					Lang:    repo.Lang,
-					Private: repo.Private,
-					Fork:    repo.Fork,
-					Size:    repo.Size,
-					Url:     repo.Url,
-				}
-				filteredRepos = append(filteredRepos, filteredRepo)
+			if repo.Name != "" && repo.URL != "" {
+				filteredRepos = append(filteredRepos, repo)
 			}
 		}
 	} else {
 		for _, repo := range repos {
-			if !repo.Fork && repo.Name != "" && repo.Url != "" {
-				filteredRepo := RepoModel{
-					Name:    repo.Name,
-					Lang:    repo.Lang,
-					Private: repo.Private,
-					Fork:    repo.Fork,
-					Size:    repo.Size,
-					Url:     repo.Url,
-				}
-				filteredRepos = append(filteredRepos, filteredRepo)
+			if !repo.Fork && repo.Name != "" && repo.URL != "" {
+				filteredRepos = append(filteredRepos, repo)
 			}
 		}
 	}
@@ -135,12 +124,6 @@ func GetRepos(name string, isOrg, isPrivate, isForked, makeFile bool) (string, e
 	}
 
 	return string(jsonData), nil
-}
-
-// Repo is a struct for a GitHub repository
-type Repo struct {
-	Name string `json:"name"`
-	URL  string `json:"html_url"`
 }
 
 // Filter repos by language
