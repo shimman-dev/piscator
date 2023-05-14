@@ -7,10 +7,16 @@ import (
 	"github.com/spf13/cobra"
 )
 
+// used for flags
 var (
-	// used for flags
-	isOrg     string
+	// is name an organization, not a user
+	isOrg string
+	// is repo private
 	isPrivate string
+	// is repo a fork
+	isForked string
+	// include verbose logging
+	verbose string
 )
 
 var rootCmd = &cobra.Command{
@@ -24,7 +30,7 @@ var rootCmd = &cobra.Command{
 
 func Execute() error {
 	if err := rootCmd.Execute(); err != nil {
-		fmt.Fprintf(os.Stderr, "Whoops. There was an error while executing your CLI '%s'", err)
+		fmt.Fprintf(os.Stderr, "Whoops. There was an error while executing your piscator command '%s'", err)
 		os.Exit(1)
 	}
 
