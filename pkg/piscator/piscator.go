@@ -36,8 +36,18 @@ type RepoCollection struct {
 	Repos []*RepoModel `json:"repos"`
 }
 
+type HttpClient interface {
+	Do(req *http.Request) (*http.Response, error)
+}
+
+type RealHttpClient struct{}
+
+func (c RealHttpClient) Do(req *http.Request) (*http.Response, error) {
+	return http.DefaultClient.Do(req)
+}
+
 // Takes a GitHub username and returns a JSON string of their repos
-func GetRepos(name string, isOrg, isPrivate, isForked, makeFile bool) (string, error) {
+func GetRepos(client HttpClient, name string, isOrg, isPrivate, isForked, makeFile bool) (string, error) {
 	var githubURL string
 
 	gh, err := url.Parse("https://api.github.com/")
@@ -60,7 +70,8 @@ func GetRepos(name string, isOrg, isPrivate, isForked, makeFile bool) (string, e
 
 	var res *http.Response
 	for i := 0; i < 3; i++ {
-		res, err = http.Get(githubURL)
+		req, _ := http.NewRequest("GET", githubURL, nil)
+		res, err = client.Do(req)
 		if err != nil {
 			log.Printf("Attempt %d: failed to get repos: %v", i+1, err)
 			time.Sleep(2 * time.Second)
@@ -147,8 +158,19 @@ func RepoByLanguage(jsonStr string, language string) (string, error) {
 	return string(jsonData), nil
 }
 
+type CommandExecutor interface {
+	ExecuteCommand(name string, arg ...string) ([]byte, error)
+}
+
+type RealCommandExecutor struct{}
+
+func (r RealCommandExecutor) ExecuteCommand(name string, arg ...string) ([]byte, error) {
+	cmd := exec.Command(name, arg...)
+	return cmd.CombinedOutput()
+}
+
 // Takes JSON from GetRepos and git clones each repo
-func CloneReposFromJson(jsonStr, name string, concurrentLimit int8, verboseLog bool) error {
+func CloneReposFromJson(executor CommandExecutor, jsonStr, name string, concurrentLimit int8, verboseLog bool) error {
 	// unmarshal the JSON string into a slice of Repo structs
 	var repos []Repo
 	if err := json.Unmarshal([]byte(jsonStr), &repos); err != nil {
@@ -180,19 +202,20 @@ func CloneReposFromJson(jsonStr, name string, concurrentLimit int8, verboseLog b
 			defer wg.Done()
 
 			repoPath := path.Join(dir, repo.Name)
-			var cmd *exec.Cmd
+			var cmdOut []byte
+			var err error
 			if _, err := os.Stat(repoPath); os.IsNotExist(err) {
 				// repo doesn't exist, clone it
-				cmd = exec.Command("git", "clone", repo.URL)
-				cmd.Dir = dir
+				cmdOut, err = executor.ExecuteCommand("git", "clone", repo.URL)
+				// cmd.Dir = dir
 			} else {
 				// repo exists, pull latest changes
-				cmd = exec.Command("git", "pull")
-				cmd.Dir = repoPath
+				cmdOut, err = executor.ExecuteCommand("git", "pull")
+				// cmd.Dir = repoPath
 			}
-			out, err := cmd.CombinedOutput()
+			// out, err := cmd.CombinedOutput()
 			if err != nil {
-				fmt.Printf("failed to clone %s: %s\n", repo.URL, string(out))
+				fmt.Printf("failed to clone %s: %s\n", repo.URL, string(cmdOut))
 			}
 
 			if verboseLog {
