@@ -2,12 +2,25 @@ package piscator
 
 import (
 	"fmt"
+	"net/http"
+	"os/exec"
 
 	"github.com/shimman-dev/piscator/pkg/piscator"
 	"github.com/spf13/cobra"
 )
 
 var isVerbose bool
+
+type CommandExecutor interface {
+	ExecuteCommand(name string, arg ...string) ([]byte, error)
+}
+
+type DefaultCommandExecutor struct{}
+
+func (d DefaultCommandExecutor) ExecuteCommand(name string, arg ...string) ([]byte, error) {
+	cmd := exec.Command(name, arg...)
+	return cmd.CombinedOutput()
+}
 
 var netCmd = &cobra.Command{
 	Use:     "net",
@@ -21,18 +34,20 @@ var netCmd = &cobra.Command{
 			return
 		}
 
+		executor := &DefaultCommandExecutor{}
+		concurrentLimit := int8(5)
 		name := args[0]
 		isOrgBool, _ = cmd.PersistentFlags().GetBool("org")
 		isPrivateBool, _ = cmd.PersistentFlags().GetBool("private")
 		isForkedBool, _ = cmd.PersistentFlags().GetBool("forked")
 		makeFileBool, _ = cmd.PersistentFlags().GetBool("makeFile")
-		res, err := piscator.GetRepos(name, isOrgBool, isPrivateBool, isForkedBool, makeFileBool)
+		res, err := piscator.GetRepos(http.DefaultClient, name, isOrgBool, isPrivateBool, isForkedBool, makeFileBool)
 		if err != nil {
 			fmt.Printf("Errors: %s", err)
 			return
 		}
 		isVerbose, _ = cmd.PersistentFlags().GetBool("verbose")
-		piscator.CloneReposFromJson(res, name, 5, isVerbose)
+		piscator.CloneReposFromJson(executor, res, name, concurrentLimit, isVerbose)
 		fmt.Println("success friend :)")
 	},
 }
