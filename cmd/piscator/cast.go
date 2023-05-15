@@ -2,6 +2,7 @@ package piscator
 
 import (
 	"fmt"
+	"net/http"
 
 	"github.com/shimman-dev/piscator/pkg/piscator"
 	"github.com/spf13/cobra"
@@ -26,7 +27,7 @@ var castCmd = &cobra.Command{
 		isPrivateBool, _ = cmd.PersistentFlags().GetBool("private")
 		isForkedBool, _ = cmd.PersistentFlags().GetBool("forked")
 		makeFileBool, _ = cmd.PersistentFlags().GetBool("makeFile")
-		res, err := piscator.GetRepos(name, isOrgBool, isPrivateBool, isForkedBool, makeFileBool)
+		res, err := piscator.GetRepos(http.DefaultClient, name, isOrgBool, isPrivateBool, isForkedBool, makeFileBool)
 		if err != nil {
 			fmt.Println(err)
 			return
