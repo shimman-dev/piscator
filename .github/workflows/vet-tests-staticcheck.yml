@@ -52,5 +52,6 @@ jobs:
         with:
           issue-number: ${{ github.event.pull_request.number }}
           body: |
-            Is this working?
+            Test Coverage
+            ${{ steps.gocoverage.outputs.result }}
           edit-mode: replace
