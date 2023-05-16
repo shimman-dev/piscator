@@ -3,7 +3,7 @@ package piscator
 import (
 	"bytes"
 	"encoding/json"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"reflect"
 	"testing"
@@ -15,7 +15,7 @@ func (m MockHttpClient) Do(req *http.Request) (*http.Response, error) {
 	// Simulate a successful HTTP response
 	return &http.Response{
 		StatusCode: http.StatusOK,
-		Body:       ioutil.NopCloser(bytes.NewReader([]byte(`[{ "name": "repo1", "html_url": "url1" }]`))),
+		Body:       io.NopCloser(bytes.NewReader([]byte(`[{ "name": "repo1", "html_url": "url1" }]`))),
 	}, nil
 }
 
