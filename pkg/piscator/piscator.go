@@ -211,6 +211,9 @@ func CloneReposFromJson(executor CommandExecutor, jsonStr, name string, concurre
 
 	s := spinner.New(spinner.CharSets[11], 100*time.Millisecond)
 	s.Start()
+
+	errors := make(chan error) // Create a new error channel
+
 	// clone each repo in a separate goroutine
 	for _, repo := range repos {
 		go func(repo Repo) {
@@ -224,9 +227,20 @@ func CloneReposFromJson(executor CommandExecutor, jsonStr, name string, concurre
 			if _, err := os.Stat(repoPath); os.IsNotExist(err) {
 				// repo doesn't exist, clone it
 				cmdOut, err = executor.ExecuteCommand("git", "clone", repo.URL, repoPath)
+				if err != nil {
+					errors <- fmt.Errorf("error cloning repo: %w", err) // Send error to channel
+					return
+				}
+			} else if err != nil {
+				errors <- fmt.Errorf("error checking if repo exists: %w", err)
+				return
 			} else {
 				// repo exists, pull latest changes
 				cmdOut, err = executor.ExecuteCommandInDir(repoPath, "git", "pull")
+				if err != nil {
+					errors <- fmt.Errorf("error pulling latest changes: %w", err)
+					return
+				}
 			}
 			if err != nil {
 				fmt.Printf("failed to clone %s: %s\n", repo.URL, string(cmdOut))
@@ -243,9 +257,19 @@ func CloneReposFromJson(executor CommandExecutor, jsonStr, name string, concurre
 	}
 
 	// wait for all clones to finish
-	wg.Wait()
+	go func() {
+		wg.Wait()
+		close(errors) // Close the channel when all goroutines are done
+	}()
+
+	// Check for any errors from the goroutines
+	for err := range errors {
+		if err != nil {
+			return err // Return the first error that occurred
+		}
+	}
+
 	s.Stop()
 	fmt.Printf("Cloned %d repos\n", len(repos))
-
 	return nil
 }
