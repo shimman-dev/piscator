@@ -3,7 +3,7 @@
 Fishing for repos 🎣
 
 Visit [piscator.dev](https://piscator.dev) for documentation, usage guides, and
-release notes
+release notes.
 
 ## Installing
 
