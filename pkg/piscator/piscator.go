@@ -11,6 +11,7 @@ import (
 	"path"
 	"strconv"
 	"sync"
+	"sync/atomic"
 	"time"
 
 	"github.com/briandowns/spinner"
@@ -28,7 +29,7 @@ type RepoModel struct {
 	Lang    string `json:"language"`
 	Fork    bool   `json:"fork"`
 	Private bool   `json:"private"`
-	Size    int    `json:"size"`
+	Size    uint   `json:"size"`
 }
 
 // RepoCollection is a collection of RepoModel structs
@@ -126,10 +127,19 @@ func GetRepos(client HttpClient, name string, isOrg, isPrivate, isForked, makeFi
 	}
 
 	if makeFile {
-		err = json.NewDecoder(res.Body).Decode(&repos)
+		// Open file to write
+		file, err := os.Create("repos.json")
 		if err != nil {
 			return "", err
 		}
+		defer file.Close()
+
+		// Write JSON to file
+		_, err = file.Write(jsonData)
+		if err != nil {
+			return "", err
+		}
+
 		log.Print("repos.json created")
 	}
 
@@ -160,12 +170,19 @@ func RepoByLanguage(jsonStr string, language string) (string, error) {
 
 type CommandExecutor interface {
 	ExecuteCommand(name string, arg ...string) ([]byte, error)
+	ExecuteCommandInDir(dir, name string, arg ...string) ([]byte, error)
 }
 
 type RealCommandExecutor struct{}
 
 func (r RealCommandExecutor) ExecuteCommand(name string, arg ...string) ([]byte, error) {
 	cmd := exec.Command(name, arg...)
+	return cmd.CombinedOutput()
+}
+
+func (r RealCommandExecutor) ExecuteCommandInDir(dir, name string, arg ...string) ([]byte, error) {
+	cmd := exec.Command(name, arg...)
+	cmd.Dir = dir
 	return cmd.CombinedOutput()
 }
 
@@ -181,7 +198,7 @@ func CloneReposFromJson(executor CommandExecutor, jsonStr, name string, concurre
 	dir := name
 	if _, err := os.Stat(dir); os.IsNotExist(err) {
 		if err := os.Mkdir(dir, 0755); err != nil {
-			return err
+			return fmt.Errorf("error creating directory: %w", err)
 		}
 	}
 
@@ -189,7 +206,7 @@ func CloneReposFromJson(executor CommandExecutor, jsonStr, name string, concurre
 	var wg sync.WaitGroup
 	wg.Add(len(repos))
 
-	var counter uint8 = 1
+	var counter uint64 = 1
 	sem := make(chan struct{}, concurrentLimit)
 
 	s := spinner.New(spinner.CharSets[11], 100*time.Millisecond)
@@ -206,14 +223,11 @@ func CloneReposFromJson(executor CommandExecutor, jsonStr, name string, concurre
 			var err error
 			if _, err := os.Stat(repoPath); os.IsNotExist(err) {
 				// repo doesn't exist, clone it
-				cmdOut, err = executor.ExecuteCommand("git", "clone", repo.URL)
-				// cmd.Dir = dir
+				cmdOut, err = executor.ExecuteCommand("git", "clone", repo.URL, repoPath)
 			} else {
 				// repo exists, pull latest changes
-				cmdOut, err = executor.ExecuteCommand("git", "pull")
-				// cmd.Dir = repoPath
+				cmdOut, err = executor.ExecuteCommandInDir(repoPath, "git", "pull")
 			}
-			// out, err := cmd.CombinedOutput()
 			if err != nil {
 				fmt.Printf("failed to clone %s: %s\n", repo.URL, string(cmdOut))
 			}
@@ -223,8 +237,8 @@ func CloneReposFromJson(executor CommandExecutor, jsonStr, name string, concurre
 				log.Printf("Cloned %s/%s\n", dir, repo.Name)
 			}
 
-			s.Suffix = fmt.Sprintf(" Cloned %d/%d repos\n", counter, len(repos))
-			counter += 1
+			atomic.AddUint64(&counter, 1)
+			s.Suffix = fmt.Sprintf(" Cloning %d/%d repos\n", counter, len(repos))
 		}(repo)
 	}
 
