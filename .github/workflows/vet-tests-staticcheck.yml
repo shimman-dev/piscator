@@ -1,12 +1,8 @@
-name: "Run tests, vet, staticchecker, and coverage"
+name: "vet, tests, staticchecker, and coverage"
 
 on:
-  pull_request:
-    types: [opened]
-  push:
-    branches:
-      - main
-      - release
+  pull_request_target:
+    branches: [main]
 
 env:
   GO111MODULE: on
