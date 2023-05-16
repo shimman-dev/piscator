@@ -7,18 +7,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// used for flags
-var (
-	// is name an organization, not a user
-	isOrg string
-	// is repo private
-	isPrivate string
-	// is repo a fork
-	isForked string
-	// include verbose logging
-	verbose string
-)
-
 var rootCmd = &cobra.Command{
 	Use:   "piscator",
 	Short: "piscator is a CLI tool for cloning GitHub repositories",
