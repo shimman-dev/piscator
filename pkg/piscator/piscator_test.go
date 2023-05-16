@@ -147,6 +147,11 @@ func (m MockCommandExecutor) ExecuteCommand(name string, arg ...string) ([]byte,
 	return []byte("ok"), nil
 }
 
+func (m MockCommandExecutor) ExecuteCommandInDir(dir, name string, arg ...string) ([]byte, error) {
+	// Always return success
+	return []byte("ok"), nil
+}
+
 func TestCloneReposFromJson(t *testing.T) {
 	executor := MockCommandExecutor{}
 	tests := []struct {
