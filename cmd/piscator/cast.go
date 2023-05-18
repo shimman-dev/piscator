@@ -6,9 +6,11 @@ import (
 
 	"github.com/shimman-dev/piscator/pkg/piscator"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
-var isOrgBool, isPrivateBool, isForkedBool, makeFileBool bool
+var isSelfBool, isOrgBool, isPrivateBool, isForkedBool, makeFileBool bool
+var githubToken string
 
 var castCmd = &cobra.Command{
 	Use:     "cast",
@@ -23,13 +25,18 @@ var castCmd = &cobra.Command{
 		}
 
 		name := args[0]
+		tokenFileBool := viper.GetString("github_token") // get token from viper
+		isSelfBool, _ = cmd.PersistentFlags().GetBool("self")
 		isOrgBool, _ = cmd.PersistentFlags().GetBool("org")
 		isPrivateBool, _ = cmd.PersistentFlags().GetBool("private")
 		isForkedBool, _ = cmd.PersistentFlags().GetBool("forked")
 		makeFileBool, _ = cmd.PersistentFlags().GetBool("makeFile")
-		res, err := piscator.GetRepos(http.DefaultClient, name, isOrgBool, isPrivateBool, isForkedBool, makeFileBool)
+
+		sleeper := &piscator.RealSleeper{}
+
+		res, err := piscator.GetRepos(http.DefaultClient, sleeper, name, tokenFileBool, isSelfBool, isOrgBool, isPrivateBool, isForkedBool, makeFileBool)
 		if err != nil {
-			fmt.Println(err)
+			fmt.Printf("Errors: %s", err)
 			return
 		}
 		fmt.Println(res)
@@ -37,10 +44,17 @@ var castCmd = &cobra.Command{
 }
 
 func init() {
+	viper.AutomaticEnv() // automatically use environment variables
+
+	castCmd.PersistentFlags().BoolVarP(&isSelfBool, "self", "s", false, "Your GitHub user")
 	castCmd.PersistentFlags().BoolVarP(&isOrgBool, "org", "o", false, "Is an organization")
 	castCmd.PersistentFlags().BoolVarP(&isPrivateBool, "private", "p", false, "Include private repositories")
 	castCmd.PersistentFlags().BoolVarP(&isForkedBool, "forked", "x", false, "Include forked repositories")
 	castCmd.PersistentFlags().BoolVarP(&makeFileBool, "makeFile", "f", false, "Generate a repos.json file")
+	castCmd.PersistentFlags().StringVarP(&githubToken, "token", "t", "", "GitHub token")
+
+	// bind the token flag to a viper key
+	viper.BindPFlag("github_token", castCmd.PersistentFlags().Lookup("token"))
 
 	rootCmd.AddCommand(castCmd)
 }
