@@ -47,8 +47,19 @@ func (c RealHttpClient) Do(req *http.Request) (*http.Response, error) {
 	return http.DefaultClient.Do(req)
 }
 
-// Takes a GitHub username and returns a JSON string of their repos
-func GetRepos(client HttpClient, name string, isOrg, isPrivate, isForked, makeFile bool) (string, error) {
+type Sleeper interface {
+	Sleep(d time.Duration)
+}
+
+type RealSleeper struct{}
+
+func (rs RealSleeper) Sleep(d time.Duration) {
+	time.Sleep(d)
+}
+
+// Retrieves repositories of a user/organization/self from GitHub.
+// Optionally filters based on private/fork status, and returns them as a JSON string or writes to a file.
+func GetRepos(client HttpClient, sleeper Sleeper, name, token string, isSelf, isOrg, isPrivate, isForked, makeFile bool) (string, error) {
 	var githubURL string
 
 	gh, err := url.Parse("https://api.github.com/")
@@ -56,9 +67,12 @@ func GetRepos(client HttpClient, name string, isOrg, isPrivate, isForked, makeFi
 		return "", err
 	}
 
-	if isOrg {
+	switch {
+	case isSelf:
+		gh.Path = path.Join("user", "repos")
+	case isOrg:
 		gh.Path = path.Join("orgs", name, "repos")
-	} else {
+	default:
 		gh.Path = path.Join("users", name, "repos")
 	}
 
@@ -71,32 +85,45 @@ func GetRepos(client HttpClient, name string, isOrg, isPrivate, isForked, makeFi
 
 	var res *http.Response
 	for i := 0; i < 3; i++ {
-		req, _ := http.NewRequest("GET", githubURL, nil)
+		req, err := http.NewRequest("GET", githubURL, nil)
+		if err != nil {
+			log.Fatalf("Error creating request: %v", err)
+		}
+		req.Header.Set("User-Agent", "shimman-dev/piscator")
+		if token != "" {
+			req.Header.Set("Accept", "application/vnd.github+json")
+			req.Header.Set("Authorization", "Bearer "+token)
+		}
 		res, err = client.Do(req)
+
 		if err != nil {
 			log.Printf("Attempt %d: failed to get repos: %v", i+1, err)
-			time.Sleep(2 * time.Second)
-			continue
-		}
-		if res.StatusCode != http.StatusOK {
-			log.Printf("Attempt %d: unexpected status code: %d", i+1, res.StatusCode)
-			time.Sleep(2 * time.Second)
+			sleeper.Sleep(2 * time.Second)
 			continue
 		}
 		defer res.Body.Close()
-		break
+
+		if res.StatusCode != http.StatusOK {
+			log.Printf("Attempt %d: unexpected status code: %d", i+1, res.StatusCode)
+			sleeper.Sleep(2 * time.Second)
+			continue
+		}
+
+		if remaining := res.Header.Get("X-Ratelimit-Remaining"); remaining == "0" {
+			resetTimeStr := res.Header.Get("X-Ratelimit-Reset")
+			resetTimeUnix, _ := strconv.ParseInt(resetTimeStr, 10, 64)
+			resetTime := time.Unix(resetTimeUnix, 0)
+			log.Printf("Attempt %d: rate limit exceeded, sleeping until %v", i+1, resetTime)
+			sleeper.Sleep(time.Until(resetTime))
+		} else {
+			break
+		}
 	}
 	if err != nil {
 		return "", err
 	}
 	if res == nil {
 		return "", fmt.Errorf("failed to get repos after 3 attempts")
-	}
-	if remaining := res.Header.Get("X-Ratelimit-Remaining"); remaining == "0" {
-		resetTimeStr := res.Header.Get("X-Ratelimit-Reset")
-		resetTimeUnix, _ := strconv.ParseInt(resetTimeStr, 10, 64)
-		resetTime := time.Unix(resetTimeUnix, 0)
-		time.Sleep(time.Until(resetTime))
 	}
 
 	var repos []RepoModel
@@ -139,14 +166,12 @@ func GetRepos(client HttpClient, name string, isOrg, isPrivate, isForked, makeFi
 		if err != nil {
 			return "", err
 		}
-
-		log.Print("repos.json created")
 	}
 
 	return string(jsonData), nil
 }
 
-// Filter repos by language
+// Filters repositories from a JSON string by programming language and returns them as a JSON string.
 func RepoByLanguage(jsonStr string, language string) (string, error) {
 	var repos []RepoModel
 	if err := json.Unmarshal([]byte(jsonStr), &repos); err != nil {
@@ -186,7 +211,7 @@ func (r RealCommandExecutor) ExecuteCommandInDir(dir, name string, arg ...string
 	return cmd.CombinedOutput()
 }
 
-// Takes JSON from GetRepos and git clones each repo
+// Clones GitHub repositories from a JSON string concurrently, updates if they already exist, and logs progress.
 func CloneReposFromJson(executor CommandExecutor, jsonStr, name string, concurrentLimit int8, verboseLog bool) error {
 	// unmarshal the JSON string into a slice of Repo structs
 	var repos []Repo
