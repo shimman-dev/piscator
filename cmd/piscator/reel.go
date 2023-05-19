@@ -15,7 +15,7 @@ var reelCmd = &cobra.Command{
 	Use:     "reel",
 	Aliases: []string{"c"},
 	Short:   "git clone collected repos",
-	Long:    `create a directory based on user/org name then create a git repo for each collection`,
+	Long:    `Create a directory based on user/org name then create a git repo for each collection`,
 	Args:    cobra.MinimumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		if len(args) < 1 {
@@ -51,13 +51,13 @@ var reelCmd = &cobra.Command{
 func init() {
 	viper.AutomaticEnv() // automatically use environment variables
 
-	reelCmd.PersistentFlags().BoolVarP(&isSelfBool, "self", "s", false, "Your GitHub user")
+	reelCmd.PersistentFlags().BoolVarP(&isSelfBool, "self", "s", false, "Your GitHub user, requires a personal access token")
 	reelCmd.PersistentFlags().BoolVarP(&isOrgBool, "org", "o", false, "Is an organization")
 	reelCmd.PersistentFlags().BoolVarP(&isPrivateBool, "private", "p", false, "Include private repositories")
 	reelCmd.PersistentFlags().BoolVarP(&isForkedBool, "forked", "x", false, "Include forked repositories")
 	reelCmd.PersistentFlags().BoolVarP(&makeFileBool, "makeFile", "f", false, "Generate a repos.json file")
 	reelCmd.PersistentFlags().BoolVarP(&isVerbose, "verbose", "v", false, "logs detailed messaging to stdout")
-	reelCmd.PersistentFlags().StringVarP(&githubToken, "token", "t", "", "GitHub token")
+	reelCmd.PersistentFlags().StringVarP(&githubToken, "token", "t", "", "GitHub personal access token")
 
 	// bind the token flag to a viper key
 	viper.BindPFlag("github_token", reelCmd.PersistentFlags().Lookup("token"))
