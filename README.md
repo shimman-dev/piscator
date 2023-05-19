@@ -1,5 +1,7 @@
 # piscator
 
+![showing the two piscator commands using charmbracelet/vhs](./docs/piscator.gif)
+
 Ahoy, fellow sailor! Set your sights on the `piscator` CLT, a trusty companion
 for your coding odysseys. With `piscator` by your side, you'll navigate the vast
 seas of GitHub with ease, harnessing the power of the command-line interface to
@@ -52,15 +54,15 @@ brave crew, for the best is yet to come!
 ## Future Todos
 
 - [ ] flesh out readme
-  - [ ] create vhs instructions
-- [x] automate releases
+  - [x] create vhs instructions
+- [x] automate release binaries
 - [ ] release on major package managers
-	- [ ] homebrew
-	- [ ] nix
-	- [ ] fedora
-	- [ ] macports
-	- [ ] arch linux (btw)
-	- [ ] debian
-	- [ ] scoop
+  - [ ] homebrew
+  - [ ] nix
+  - [ ] fedora
+  - [ ] macports
+  - [ ] arch linux (btw)
+  - [ ] debian
+  - [ ] scoop
 - [x] add tests
 - [ ] make showcase site
