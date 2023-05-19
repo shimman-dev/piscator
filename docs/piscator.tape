@@ -1,6 +1,7 @@
 Output docs/piscator.gif
 
 Set WindowBar Colorful
+Set PlaybackSpeed 0.5
 Set FontSize 18
 Set FontFamily "Hack"
 Set Height 1000
