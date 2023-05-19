@@ -28,4 +28,5 @@ Sleep 10s
 
 # Cleanup
 Hide
-Type 'rm azemetre'
+Type "rm -rf azemetre"
+Enter
