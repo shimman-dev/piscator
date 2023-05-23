@@ -15,8 +15,15 @@ var reelCmd = &cobra.Command{
 	Use:     "reel",
 	Aliases: []string{"c"},
 	Short:   "git clone collected repos",
-	Long:    `Create a directory based on user/org name then create a git repo for each collection`,
-	Args:    cobra.MinimumNArgs(1),
+	Long: `Avast, ye salty fisherman! Prepare to cast your line with the reel command
+and embark on a daring fishing expedition in the GitHub waters. As you sail
+through the digital sea, you'll skillfully create a directory that bears the
+name of the user or organization, and with each catch, you'll reel in a precious
+git repository. Like a seasoned fisherman, you'll nurture and cultivate these
+repositories, transforming them into valuable assets for your coding endeavors.
+Unleash your fishing prowess, reel in those repositories, and embark on a coding
+voyage like no other.`,
+	Args: cobra.MinimumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		if len(args) < 1 {
 			fmt.Println("Please provide a GitHub name")
@@ -27,13 +34,12 @@ var reelCmd = &cobra.Command{
 		tokenFileBool := viper.GetString("github_token") // get token from viper
 		isSelfBool, _ = cmd.PersistentFlags().GetBool("self")
 		isOrgBool, _ = cmd.PersistentFlags().GetBool("org")
-		isPrivateBool, _ = cmd.PersistentFlags().GetBool("private")
 		isForkedBool, _ = cmd.PersistentFlags().GetBool("forked")
 		makeFileBool, _ = cmd.PersistentFlags().GetBool("makeFile")
 
 		sleeper := &piscator.RealSleeper{}
 
-		res, err := piscator.GetRepos(http.DefaultClient, sleeper, name, tokenFileBool, isSelfBool, isOrgBool, isPrivateBool, isForkedBool, makeFileBool)
+		res, err := piscator.GetRepos(http.DefaultClient, sleeper, name, tokenFileBool, isSelfBool, isOrgBool, isForkedBool, makeFileBool)
 		if err != nil {
 			fmt.Printf("Errors: %s", err)
 			return
@@ -53,7 +59,6 @@ func init() {
 
 	reelCmd.PersistentFlags().BoolVarP(&isSelfBool, "self", "s", false, "Your GitHub user, requires a personal access token")
 	reelCmd.PersistentFlags().BoolVarP(&isOrgBool, "org", "o", false, "Is an organization")
-	reelCmd.PersistentFlags().BoolVarP(&isPrivateBool, "private", "p", false, "Include private repositories")
 	reelCmd.PersistentFlags().BoolVarP(&isForkedBool, "forked", "x", false, "Include forked repositories")
 	reelCmd.PersistentFlags().BoolVarP(&makeFileBool, "makeFile", "f", false, "Generate a repos.json file")
 	reelCmd.PersistentFlags().BoolVarP(&isVerbose, "verbose", "v", false, "logs detailed messaging to stdout")
