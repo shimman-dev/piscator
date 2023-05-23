@@ -6,8 +6,10 @@ import (
 	"errors"
 	"io"
 	"net/http"
+	"os"
 	"reflect"
 	"strconv"
+	"strings"
 	"testing"
 	"time"
 )
@@ -76,7 +78,7 @@ func TestGetRepos(t *testing.T) {
 			wantError:  false,
 		},
 		{
-			name:       "user1",
+			name:       "user1-makefile",
 			token:      "token",
 			isSelf:     true,
 			isOrg:      false,
@@ -104,7 +106,7 @@ func TestGetRepos(t *testing.T) {
 			wantError:  false,
 		},
 		{
-			name:       "user1",
+			name:       "user1-makefile",
 			token:      "token",
 			isSelf:     true,
 			isOrg:      false,
@@ -132,7 +134,7 @@ func TestGetRepos(t *testing.T) {
 			wantError:  false,
 		},
 		{
-			name:       "user1",
+			name:       "user1-makefile",
 			token:      "token",
 			isSelf:     true,
 			isOrg:      false,
@@ -160,66 +162,10 @@ func TestGetRepos(t *testing.T) {
 			wantError:  false,
 		},
 		{
-			name:       "user1",
+			name:       "user1-makefile",
 			token:      "token",
 			isSelf:     true,
 			isOrg:      false,
-			isForked:   true,
-			makeFile:   true,
-			httpError:  nil,
-			httpStatus: 200,
-			httpBody:   "[]",
-			rateLimit:  "5000",
-			rateReset:  "0",
-			wantError:  false,
-		},
-		{
-			name:       "user1",
-			token:      "token",
-			isSelf:     true,
-			isOrg:      true,
-			isForked:   false,
-			makeFile:   false,
-			httpError:  nil,
-			httpStatus: 200,
-			httpBody:   "[]",
-			rateLimit:  "5000",
-			rateReset:  "0",
-			wantError:  false,
-		},
-		{
-			name:       "user1",
-			token:      "token",
-			isSelf:     true,
-			isOrg:      true,
-			isForked:   false,
-			makeFile:   true,
-			httpError:  nil,
-			httpStatus: 200,
-			httpBody:   "[]",
-			rateLimit:  "5000",
-			rateReset:  "0",
-			wantError:  false,
-		},
-		{
-			name:       "user1",
-			token:      "token",
-			isSelf:     true,
-			isOrg:      true,
-			isForked:   true,
-			makeFile:   false,
-			httpError:  nil,
-			httpStatus: 200,
-			httpBody:   "[]",
-			rateLimit:  "5000",
-			rateReset:  "0",
-			wantError:  false,
-		},
-		{
-			name:       "user1",
-			token:      "token",
-			isSelf:     true,
-			isOrg:      true,
 			isForked:   true,
 			makeFile:   true,
 			httpError:  nil,
@@ -244,7 +190,7 @@ func TestGetRepos(t *testing.T) {
 			wantError:  false,
 		},
 		{
-			name:       "user1",
+			name:       "user1-makefile",
 			token:      "token",
 			isSelf:     true,
 			isOrg:      true,
@@ -272,7 +218,63 @@ func TestGetRepos(t *testing.T) {
 			wantError:  false,
 		},
 		{
+			name:       "user1-makefile",
+			token:      "token",
+			isSelf:     true,
+			isOrg:      true,
+			isForked:   true,
+			makeFile:   true,
+			httpError:  nil,
+			httpStatus: 200,
+			httpBody:   "[]",
+			rateLimit:  "5000",
+			rateReset:  "0",
+			wantError:  false,
+		},
+		{
 			name:       "user1",
+			token:      "token",
+			isSelf:     true,
+			isOrg:      true,
+			isForked:   false,
+			makeFile:   false,
+			httpError:  nil,
+			httpStatus: 200,
+			httpBody:   "[]",
+			rateLimit:  "5000",
+			rateReset:  "0",
+			wantError:  false,
+		},
+		{
+			name:       "user1-makefile",
+			token:      "token",
+			isSelf:     true,
+			isOrg:      true,
+			isForked:   false,
+			makeFile:   true,
+			httpError:  nil,
+			httpStatus: 200,
+			httpBody:   "[]",
+			rateLimit:  "5000",
+			rateReset:  "0",
+			wantError:  false,
+		},
+		{
+			name:       "user1",
+			token:      "token",
+			isSelf:     true,
+			isOrg:      true,
+			isForked:   true,
+			makeFile:   false,
+			httpError:  nil,
+			httpStatus: 200,
+			httpBody:   "[]",
+			rateLimit:  "5000",
+			rateReset:  "0",
+			wantError:  false,
+		},
+		{
+			name:       "user1-makefile",
 			token:      "token",
 			isSelf:     true,
 			isOrg:      true,
@@ -300,7 +302,63 @@ func TestGetRepos(t *testing.T) {
 			wantError:  false,
 		},
 		{
+			name:       "user1-makefile",
+			token:      "token",
+			isSelf:     false,
+			isOrg:      false,
+			isForked:   false,
+			makeFile:   true,
+			httpError:  nil,
+			httpStatus: 200,
+			httpBody:   "[]",
+			rateLimit:  "5000",
+			rateReset:  "0",
+			wantError:  false,
+		},
+		{
 			name:       "user1",
+			token:      "token",
+			isSelf:     false,
+			isOrg:      false,
+			isForked:   true,
+			makeFile:   false,
+			httpError:  nil,
+			httpStatus: 200,
+			httpBody:   "[]",
+			rateLimit:  "5000",
+			rateReset:  "0",
+			wantError:  false,
+		},
+		{
+			name:       "user1-makefile",
+			token:      "token",
+			isSelf:     false,
+			isOrg:      false,
+			isForked:   true,
+			makeFile:   true,
+			httpError:  nil,
+			httpStatus: 200,
+			httpBody:   "[]",
+			rateLimit:  "5000",
+			rateReset:  "0",
+			wantError:  false,
+		},
+		{
+			name:       "user1",
+			token:      "token",
+			isSelf:     false,
+			isOrg:      false,
+			isForked:   false,
+			makeFile:   false,
+			httpError:  nil,
+			httpStatus: 200,
+			httpBody:   "[]",
+			rateLimit:  "5000",
+			rateReset:  "0",
+			wantError:  false,
+		},
+		{
+			name:       "user1-makefile",
 			token:      "token",
 			isSelf:     false,
 			isOrg:      false,
@@ -332,20 +390,6 @@ func TestGetRepos(t *testing.T) {
 			token:      "token",
 			isSelf:     false,
 			isOrg:      false,
-			isForked:   true,
-			makeFile:   true,
-			httpError:  nil,
-			httpStatus: 200,
-			httpBody:   "[]",
-			rateLimit:  "5000",
-			rateReset:  "0",
-			wantError:  false,
-		},
-		{
-			name:       "user1",
-			token:      "token",
-			isSelf:     false,
-			isOrg:      false,
 			isForked:   false,
 			makeFile:   false,
 			httpError:  nil,
@@ -356,91 +400,7 @@ func TestGetRepos(t *testing.T) {
 			wantError:  false,
 		},
 		{
-			name:       "user1",
-			token:      "token",
-			isSelf:     false,
-			isOrg:      false,
-			isForked:   false,
-			makeFile:   true,
-			httpError:  nil,
-			httpStatus: 200,
-			httpBody:   "[]",
-			rateLimit:  "5000",
-			rateReset:  "0",
-			wantError:  false,
-		},
-		{
-			name:       "user1",
-			token:      "token",
-			isSelf:     false,
-			isOrg:      false,
-			isForked:   true,
-			makeFile:   false,
-			httpError:  nil,
-			httpStatus: 200,
-			httpBody:   "[]",
-			rateLimit:  "5000",
-			rateReset:  "0",
-			wantError:  false,
-		},
-		{
-			name:       "user1",
-			token:      "token",
-			isSelf:     false,
-			isOrg:      false,
-			isForked:   false,
-			makeFile:   false,
-			httpError:  nil,
-			httpStatus: 200,
-			httpBody:   "[]",
-			rateLimit:  "5000",
-			rateReset:  "0",
-			wantError:  false,
-		},
-		{
-			name:       "user1",
-			token:      "token",
-			isSelf:     false,
-			isOrg:      true,
-			isForked:   false,
-			makeFile:   true,
-			httpError:  nil,
-			httpStatus: 200,
-			httpBody:   "[]",
-			rateLimit:  "5000",
-			rateReset:  "0",
-			wantError:  false,
-		},
-		{
-			name:       "user1",
-			token:      "token",
-			isSelf:     false,
-			isOrg:      true,
-			isForked:   true,
-			makeFile:   false,
-			httpError:  nil,
-			httpStatus: 200,
-			httpBody:   "[]",
-			rateLimit:  "5000",
-			rateReset:  "0",
-			wantError:  false,
-		},
-		{
-			name:       "user1",
-			token:      "token",
-			isSelf:     false,
-			isOrg:      true,
-			isForked:   false,
-			makeFile:   false,
-			httpError:  nil,
-			httpStatus: 200,
-			httpBody:   "[]",
-			rateLimit:  "5000",
-			rateReset:  "0",
-			wantError:  false,
-		},
-		{
-			name:       "user1",
+			name:       "user1-makefile",
 			token:      "token",
 			isSelf:     false,
 			isOrg:      true,
@@ -472,6 +432,48 @@ func TestGetRepos(t *testing.T) {
 			token:      "token",
 			isSelf:     false,
 			isOrg:      true,
+			isForked:   false,
+			makeFile:   false,
+			httpError:  nil,
+			httpStatus: 200,
+			httpBody:   "[]",
+			rateLimit:  "5000",
+			rateReset:  "0",
+			wantError:  false,
+		},
+		{
+			name:       "user1-makefile",
+			token:      "token",
+			isSelf:     false,
+			isOrg:      true,
+			isForked:   false,
+			makeFile:   true,
+			httpError:  nil,
+			httpStatus: 200,
+			httpBody:   "[]",
+			rateLimit:  "5000",
+			rateReset:  "0",
+			wantError:  false,
+		},
+		{
+			name:       "user1",
+			token:      "token",
+			isSelf:     false,
+			isOrg:      true,
+			isForked:   true,
+			makeFile:   false,
+			httpError:  nil,
+			httpStatus: 200,
+			httpBody:   "[]",
+			rateLimit:  "5000",
+			rateReset:  "0",
+			wantError:  false,
+		},
+		{
+			name:       "user1-makefile",
+			token:      "token",
+			isSelf:     false,
+			isOrg:      true,
 			isForked:   true,
 			makeFile:   true,
 			httpError:  nil,
@@ -482,7 +484,7 @@ func TestGetRepos(t *testing.T) {
 			wantError:  false,
 		},
 		{
-			name:       "forked repos",
+			name:       "forked repos-makefile",
 			token:      "token",
 			isSelf:     false,
 			isOrg:      true,
@@ -521,7 +523,7 @@ func TestGetRepos(t *testing.T) {
 			wantError: false,
 		},
 		{
-			name:       "forked repos",
+			name:       "forked repos-makefile",
 			token:      "token",
 			isSelf:     false,
 			isOrg:      true,
@@ -680,6 +682,16 @@ func TestGetRepos(t *testing.T) {
 					}
 				}
 			}
+
+			// test cleanup, after it has run
+			defer func() {
+				if strings.Contains(tt.name, "-makefile") {
+					err := os.Remove("repos.json")
+					if err != nil {
+						t.Errorf("Failed to remove repos.json file: %v", err)
+					}
+				}
+			}()
 		})
 	}
 }
@@ -801,7 +813,7 @@ func (m MockCommandExecutor) ExecuteCommandInDir(dir, name string, arg ...string
 	return []byte("ok"), nil
 }
 
-func TestCloneReposFromJson_ExecuteCommandError(t *testing.T) {
+func TestCloneReposFromJson(t *testing.T) {
 	successExecutor := MockCommandExecutor{
 		errors: map[string]error{},
 	}
@@ -834,6 +846,15 @@ func TestCloneReposFromJson_ExecuteCommandError(t *testing.T) {
 			if (err != nil) != tt.wantError {
 				t.Errorf("CloneReposFromJson() error = %v, wantError %v", err, tt.wantError)
 			}
+
+			// test cleanup, after it has run
+			defer func() {
+				err := os.RemoveAll(tt.name)
+				if err != nil {
+					t.Errorf("Failed to remove %s directory: %v", tt.name, err)
+				}
+			}()
 		})
+
 	}
 }
