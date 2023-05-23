@@ -58,8 +58,8 @@ func (rs RealSleeper) Sleep(d time.Duration) {
 }
 
 // Retrieves repositories of a user/organization/self from GitHub.
-// Optionally filters based on private/fork status, and returns them as a JSON string or writes to a file.
-func GetRepos(client HttpClient, sleeper Sleeper, name, token string, isSelf, isOrg, isPrivate, isForked, makeFile bool) (string, error) {
+// Optionally filters based on fork status, and returns them as a JSON string or writes to a file.
+func GetRepos(client HttpClient, sleeper Sleeper, name, token string, isSelf, isOrg, isForked, makeFile bool) (string, error) {
 	var githubURL string
 
 	gh, err := url.Parse("https://api.github.com/")
@@ -78,9 +78,6 @@ func GetRepos(client HttpClient, sleeper Sleeper, name, token string, isSelf, is
 
 	params := url.Values{}
 	params.Add("per_page", "1000")
-	if isPrivate {
-		params.Add("private", "true")
-	}
 	githubURL = gh.String() + "?" + params.Encode()
 
 	var res *http.Response
