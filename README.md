@@ -60,7 +60,7 @@ brave crew, for the best is yet to come!
 
 ### [Usage](#usage)
 
-Avast, matey! Let me tell ye about the heart of the `piscator ` vessel: the
+Avast, matey! Let me tell ye about the heart of the `piscator` vessel: the
 mighty commands `cast` and `reel`.
 
 With a swift cast, the command will fetch ye a bounty of JSON, ripe for the
