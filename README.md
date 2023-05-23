@@ -24,7 +24,21 @@ efficiency. Embrace the spirit of the sailor, unleash the power of
 `piscator`, and embark on a coding voyage that will leave a lasting mark on the
 open seas of code.
 
-## Installing
+---
+
+Table of contents:
+
+- [Installation](#install)
+- [Usage](#usage)
+- [Documentation](#docs)
+  - [piscator](#piscator)
+  - [cast](#cast)
+  - [reel](#reel)
+- [Todos](#todos)
+
+---
+
+## [Installation](#install)
 
 Although the current [releases](https://github.com/shimman-dev/piscator/releases)
 page offers binaries for Linux, MacOS, and Windows, rest assured that I have
@@ -47,7 +61,7 @@ grateful for your unwavering support. May our sails be filled with the winds of
 progress, as we navigate the ever-changing tides of technology. Onward, my
 brave crew, for the best is yet to come!
 
-### Usage
+### [Usage](#usage)
 
 Avast, matey! Let me tell ye about the heart of the `piscator ` vessel: the
 mighty commands `cast` and `reel`.
@@ -69,9 +83,9 @@ catch, ensuring ye always have the freshest head.
 So, me hearty, set sail with `piscator` and let the commands `cast` and `reel`
 guide ye on yer voyage to GitHub riches!
 
-## Documentation
+## [Documentation](#docs)
 
-### piscator
+### [piscator](#piscator)
 
 Running `piscator help` will show the commands of `piscator`
 
@@ -112,7 +126,7 @@ Use "piscator [command] --help" for more information about a command.
 
 </details>
 
-### cast
+### [cast](#cast)
 
 Running `pisctor cast -h` will show all available flags:
 
@@ -455,7 +469,6 @@ Running `piscator cast username -x` will output a JSON of public and forked repo
 
 </details>
 
-
 ---
 
 Running `piscator cast username -f` will output a JSON of public repositories
@@ -463,7 +476,7 @@ and create a `repos.json` file:
 
 ![running piscator cast azemetre -x](./docs/cast-file.gif)
 
-### reel
+### [reel](#reels)
 
 **Please note:** `piscator reel` can take the same flags as `piscator cast`, so
 if you would like to reel in repos from an organization or yourself it will
@@ -511,7 +524,7 @@ their repositories:
 
 ![running piscator reel azemetre](./docs/reel-user.gif)
 
-## Future Todos
+## [Todos](#todos)
 
 - [x] flesh out readme
   - [x] create vhs tapes
