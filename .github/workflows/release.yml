@@ -27,6 +27,7 @@ jobs:
           goarch: ${{ matrix.goarch }}
           goversion: "https://dl.google.com/go/go1.20.3.linux-amd64.tar.gz"
           binary_name: "piscator"
+          sha256sum: true
           extra_files: LICENSE README.md
     permissions:
       contents: write
