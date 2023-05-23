@@ -10,4 +10,16 @@ Set TypingSpeed 150ms
 
 Type "piscator help"
 Enter
-Sleep 8s
+Sleep 6s
+
+Ctrl+L
+
+Type "piscator cast -h"
+Enter
+Sleep 6s
+
+Ctrl+L
+
+Type "piscator reel -h"
+Enter
+Sleep 6s
