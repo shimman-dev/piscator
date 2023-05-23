@@ -316,18 +316,18 @@ their repositories:
 
 ## [Todos](#todos)
 
+- [ ] add ability to filter by language
 - [x] flesh out readme
-- [x] create vhs tapes
+  - [x] create vhs tapes
 - [x] automate release binaries
 - [ ] release on major package managers
-- [ ] homebrew
-- [ ] nix
-- [ ] fedora
-- [ ] macports
-- [ ] arch linux (btw)
-- [ ] debian
-- [ ] scoop
+  - [ ] homebrew
+  - [ ] nix
+  - [ ] fedora
+  - [ ] macports
+  - [ ] arch linux (btw)
+  - [ ] debian
+  - [ ] scoop
 - [x] add tests
 - [ ] generate man pages
 - [ ] make showcase site
-- [ ] add ability to filter by language
