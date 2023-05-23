@@ -29,6 +29,7 @@ open seas of code.
 Table of contents:
 
 - [Installation](#installation)
+  - [homebrew](#homebrew)
 - [Usage](#usage)
 - [Documentation](#documentation)
 - [Todos](#todos)
@@ -57,6 +58,26 @@ brighter future for piscator. Ye are the lifeblood of this crew, and I am
 grateful for your unwavering support. May our sails be filled with the winds of
 progress, as we navigate the ever-changing tides of technology. Onward, my
 brave crew, for the best is yet to come!
+
+#### [homebrew](#homebrew)
+
+Ahoy, mateys! I bring tidings of great joy for all ye sailors out there. We've
+finally hoisted the Jolly Roger and released our very own Homebrew package for
+the mighty piscator! Avast, ye scurvy dogs, and follow these simple steps to
+get the piscator CLT installed on yer ship:
+
+```shell
+brew tap shimman-dev/piscator
+brew install piscator
+```
+
+Arr, ye be all set now! The piscator CLT be installed and ready to sail the
+package seas on yer command. But hold fast, me hearties, for this be just the
+beginning. We'll be setting sail to conquer other package managers in the days
+to come. So, keep a weather eye on the horizon for more exciting releases!
+
+Fair winds and smooth seas to ye, as ye embark on yer piscator adventures with
+Homebrew at yer side!
 
 ### [Usage](#usage)
 
@@ -321,7 +342,7 @@ their repositories:
   - [x] create vhs tapes
 - [x] automate release binaries
 - [ ] release on major package managers
-  - [ ] homebrew
+  - [x] homebrew
   - [ ] nix
   - [ ] fedora
   - [ ] macports
