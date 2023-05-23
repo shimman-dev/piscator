@@ -67,7 +67,7 @@ the mighty piscator! Avast, ye scurvy dogs, and follow these simple steps to
 get the piscator CLT installed on yer ship:
 
 ```shell
-brew tap shimman-dev/piscator
+brew tap shimman-dev/taps
 brew install piscator
 ```
 
