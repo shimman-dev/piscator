@@ -1,4 +1,4 @@
-Output docs/reel-help.gif
+Output docs/reel-user.gif
 
 Set WindowBar Colorful
 Set Theme AdventureTime

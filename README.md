@@ -1,4 +1,4 @@
-# piscator
+# piscator - fishing made easy
 
 ![intro text and piscator demo](./docs/demo.gif)
 
@@ -28,9 +28,9 @@ open seas of code.
 
 Table of contents:
 
-- [Installation](#install)
+- [Installation](#installation)
 - [Usage](#usage)
-- [Documentation](#docs)
+- [Documentation](#documentation)
   - [piscator](#piscator)
   - [cast](#cast)
   - [reel](#reel)
@@ -38,7 +38,7 @@ Table of contents:
 
 ---
 
-## [Installation](#install)
+## [Installation](#installation)
 
 Although the current [releases](https://github.com/shimman-dev/piscator/releases)
 page offers binaries for Linux, MacOS, and Windows, rest assured that I have
@@ -83,7 +83,7 @@ catch, ensuring ye always have the freshest head.
 So, me hearty, set sail with `piscator` and let the commands `cast` and `reel`
 guide ye on yer voyage to GitHub riches!
 
-## [Documentation](#docs)
+## [Documentation](#documentation)
 
 ### [piscator](#piscator)
 
