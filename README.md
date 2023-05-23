@@ -89,7 +89,7 @@ Running `piscator help` will show the commands of `piscator`
 ![running piscator help](./docs/piscator-help.gif)
 
 <details>
-  <summary>output of running `piscator help`</summary>
+<summary>output of running `piscator help`</summary>
 
 ```text
 Embark on a grand voyage across the GitHub seas! Set sail to create
@@ -106,17 +106,17 @@ verbosity to whisper tales of each step or keep silent like a true sailor.
 Raise the anchor, set your course, and let the adventure begin!
 
 Usage:
-  piscator [flags]
-  piscator [command]
+piscator [flags]
+piscator [command]
 
 Available Commands:
-  cast        generate a json struct of GitHub repos
-  completion  Generate the autocompletion script for the specified shell
-  help        Help about any command
-  reel        git clone collected repos
+cast        generate a json struct of GitHub repos
+completion  Generate the autocompletion script for the specified shell
+help        Help about any command
+reel        git clone collected repos
 
 Flags:
-  -h, --help   help for piscator
+-h, --help   help for piscator
 
 Use "piscator [command] --help" for more information about a command.
 ```
@@ -130,7 +130,7 @@ Running `pisctor cast -h` will show all available flags:
 ![running piscator cast -h](./docs/cast-help.gif)
 
 <details>
-  <summary>output of `piscator cast -h`</summary>
+<summary>output of `piscator cast -h`</summary>
 
 ```text
 Ahoy, sailor! Prepare to navigate the GitHub sea and hoist the flag of
@@ -140,18 +140,18 @@ collection of code treasures. Navigate with ease, discovering new horizons, and
 charting your course towards software mastery.
 
 Usage:
-  piscator cast [flags]
+piscator cast [flags]
 
 Aliases:
-  cast, c
+cast, c
 
 Flags:
-  -x, --forked         Include forked repositories
-  -h, --help           help for cast
-  -f, --makeFile       Generate a repos.json file
-  -o, --org            Is an organization
-  -s, --self           Your GitHub user, requires a personal access token
-  -t, --token string   GitHub personal access token
+-x, --forked         Include forked repositories
+-h, --help           help for cast
+-f, --makeFile       Generate a repos.json file
+-o, --org            Is an organization
+-s, --self           Your GitHub user, requires a personal access token
+-t, --token string   GitHub personal access token
 ```
 
 </details>
@@ -164,90 +164,50 @@ for a user:
 ![running piscator cast shieldbattery](./docs/cast-user.gif)
 
 <details>
-  <summary>example output of `piscator cast shieldbattery`</summary>
+<summary>example output of `piscator cast shieldbattery`</summary>
 
 ```text
 [
-  {
-    "name": "broodmap",
-    "html_url": "https://github.com/ShieldBattery/broodmap",
-    "language": "Rust",
-    "fork": false,
-    "private": false,
-    "size": 4695
-  },
-  {
-    "name": "bw-chk",
-    "html_url": "https://github.com/ShieldBattery/bw-chk",
-    "language": "JavaScript",
-    "fork": false,
-    "private": false,
-    "size": 1061
-  },
-  {
-    "name": "implode-decoder",
-    "html_url": "https://github.com/ShieldBattery/implode-decoder",
-    "language": "JavaScript",
-    "fork": false,
-    "private": false,
-    "size": 96
-  },
-  {
-    "name": "jssuh",
-    "html_url": "https://github.com/ShieldBattery/jssuh",
-    "language": "JavaScript",
-    "fork": false,
-    "private": false,
-    "size": 675
-  },
-  {
-    "name": "node-interval-tree",
-    "html_url": "https://github.com/ShieldBattery/node-interval-tree",
-    "language": "TypeScript",
-    "fork": false,
-    "private": false,
-    "size": 314
-  },
-  {
-    "name": "rally-point",
-    "html_url": "https://github.com/ShieldBattery/rally-point",
-    "language": "JavaScript",
-    "fork": false,
-    "private": false,
-    "size": 966
-  },
-  {
-    "name": "scm-extractor",
-    "html_url": "https://github.com/ShieldBattery/scm-extractor",
-    "language": "JavaScript",
-    "fork": false,
-    "private": false,
-    "size": 1523
-  },
-  {
-    "name": "ShieldBattery",
-    "html_url": "https://github.com/ShieldBattery/ShieldBattery",
-    "language": "TypeScript",
-    "fork": false,
-    "private": false,
-    "size": 244880
-  },
-  {
-    "name": "stimpack",
-    "html_url": "https://github.com/ShieldBattery/stimpack",
-    "language": "Rust",
-    "fork": false,
-    "private": false,
-    "size": 57
-  },
-  {
-    "name": "trrr",
-    "html_url": "https://github.com/ShieldBattery/trrr",
-    "language": "Rust",
-    "fork": false,
-    "private": false,
-    "size": 18
-  }
+{
+	"name": "broodmap",
+	"html_url": "https://github.com/ShieldBattery/broodmap",
+	"language": "Rust",
+	"fork": false,
+	"private": false,
+	"size": 4695
+},
+{
+	"name": "rally-point",
+	"html_url": "https://github.com/ShieldBattery/rally-point",
+	"language": "JavaScript",
+	"fork": false,
+	"private": false,
+	"size": 966
+},
+{
+	"name": "ShieldBattery",
+	"html_url": "https://github.com/ShieldBattery/ShieldBattery",
+	"language": "TypeScript",
+	"fork": false,
+	"private": false,
+	"size": 244880
+},
+{
+	"name": "stimpack",
+	"html_url": "https://github.com/ShieldBattery/stimpack",
+	"language": "Rust",
+	"fork": false,
+	"private": false,
+	"size": 57
+},
+{
+	"name": "trrr",
+	"html_url": "https://github.com/ShieldBattery/trrr",
+	"language": "Rust",
+	"fork": false,
+	"private": false,
+	"size": 18
+}
 ]
 ```
 
@@ -278,98 +238,50 @@ printenv GITHUB_TOKEN
 ```
 
 <details>
-  <summary>example output of `piscator cast azemetre -s`</summary>
+<summary>example output of `piscator cast azemetre -s`</summary>
 
 ```text
 [
-  {
-    "name": "auteur-palettes",
-    "html_url": "https://github.com/azemetre/auteur-palettes",
-    "language": "JavaScript",
-    "fork": false,
-    "private": true,
-    "size": 403
-  },
-  {
-    "name": "azemetredotcom",
-    "html_url": "https://github.com/azemetre/azemetredotcom",
-    "language": "JavaScript",
-    "fork": false,
-    "private": true,
-    "size": 24256
-  },
-  {
-    "name": "boston-typescript-june-2019-talk",
-    "html_url": "https://github.com/azemetre/boston-typescript-june-2019-talk",
-    "language": "TypeScript",
-    "fork": false,
-    "private": false,
-    "size": 3268
-  },
-  {
-    "name": "gamepicker",
-    "html_url": "https://github.com/azemetre/gamepicker",
-    "language": "",
-    "fork": false,
-    "private": true,
-    "size": 47
-  },
-  {
-    "name": "hipster.nvim",
-    "html_url": "https://github.com/azemetre/hipster.nvim",
-    "language": "Lua",
-    "fork": false,
-    "private": false,
-    "size": 1446
-  },
-  {
-    "name": "idatation",
-    "html_url": "https://github.com/azemetre/idatation",
-    "language": "",
-    "fork": false,
-    "private": true,
-    "size": 34
-  },
-  {
-    "name": "musical-adventure",
-    "html_url": "https://github.com/azemetre/musical-adventure",
-    "language": "TypeScript",
-    "fork": false,
-    "private": true,
-    "size": 993
-  },
-  {
-    "name": "npx-azemetre",
-    "html_url": "https://github.com/azemetre/npx-azemetre",
-    "language": "JavaScript",
-    "fork": false,
-    "private": false,
-    "size": 653
-  },
-  {
-    "name": "oink.nvim",
-    "html_url": "https://github.com/azemetre/oink.nvim",
-    "language": "Lua",
-    "fork": false,
-    "private": true,
-    "size": 7
-  },
-  {
-    "name": "web-a11y-cheatsheet",
-    "html_url": "https://github.com/azemetre/web-a11y-cheatsheet",
-    "language": "",
-    "fork": false,
-    "private": false,
-    "size": 89
-  },
-  {
-    "name": "piscator",
-    "html_url": "https://github.com/shimman-dev/piscator",
-    "language": "Go",
-    "fork": false,
-    "private": false,
-    "size": 1006
-  }
+{
+	"name": "auteur-palettes",
+	"html_url": "https://github.com/azemetre/auteur-palettes",
+	"language": "JavaScript",
+	"fork": false,
+	"private": true,
+	"size": 403
+},
+{
+	"name": "azemetredotcom",
+	"html_url": "https://github.com/azemetre/azemetredotcom",
+	"language": "JavaScript",
+	"fork": false,
+	"private": true,
+	"size": 24256
+},
+{
+	"name": "hipster.nvim",
+	"html_url": "https://github.com/azemetre/hipster.nvim",
+	"language": "Lua",
+	"fork": false,
+	"private": false,
+	"size": 1446
+},
+{
+	"name": "musical-adventure",
+	"html_url": "https://github.com/azemetre/musical-adventure",
+	"language": "TypeScript",
+	"fork": false,
+	"private": true,
+	"size": 993
+},
+{
+	"name": "piscator",
+	"html_url": "https://github.com/shimman-dev/piscator",
+	"language": "Go",
+	"fork": false,
+	"private": false,
+	"size": 1006
+}
 ]
 ```
 
@@ -385,34 +297,34 @@ Running `piscator cast org_name -o` will output a JSON of public and repositorie
 passed with the `--token` flag or fed into the env variable `GITHUB_TOKEN`.
 
 <details>
-  <summary>example output of `piscator cast shimman-dev -o`</summary>
+<summary>example output of `piscator cast shimman-dev -o`</summary>
 
 ```text
 [
-  {
-    "name": "eslint-config",
-    "html_url": "https://github.com/shimman-dev/eslint-config",
-    "language": "JavaScript",
-    "fork": false,
-    "private": false,
-    "size": 227
-  },
-  {
-    "name": "piscator",
-    "html_url": "https://github.com/shimman-dev/piscator",
-    "language": "Go",
-    "fork": false,
-    "private": false,
-    "size": 1006
-  },
-  {
-    "name": "knockerupper",
-    "html_url": "https://github.com/shimman-dev/knockerupper",
-    "language": "",
-    "fork": false,
-    "private": true,
-    "size": 14
-  }
+{
+	"name": "eslint-config",
+	"html_url": "https://github.com/shimman-dev/eslint-config",
+	"language": "JavaScript",
+	"fork": false,
+	"private": false,
+	"size": 227
+},
+{
+	"name": "piscator",
+	"html_url": "https://github.com/shimman-dev/piscator",
+	"language": "Go",
+	"fork": false,
+	"private": false,
+	"size": 1006
+},
+{
+	"name": "knockerupper",
+	"html_url": "https://github.com/shimman-dev/knockerupper",
+	"language": "",
+	"fork": false,
+	"private": true,
+	"size": 14
+}
 ]
 ```
 
@@ -425,42 +337,26 @@ Running `piscator cast username -x` will output a JSON of public and forked repo
 ![running piscator cast azemetre -x](./docs/cast-fork.gif)
 
 <details>
-  <summary>example output of `piscator cast azemetre -x`</summary>
+<summary>example output of `piscator cast azemetre -x`</summary>
 
 ```text
-	[
-  {
-    "name": "Adv360-Pro-ZMK",
-    "html_url": "https://github.com/azemetre/Adv360-Pro-ZMK",
-    "language": "",
-    "fork": true,
-    "private": false,
-    "size": 145
-  },
-	  {
-    "name": "auteur-palettes",
-    "html_url": "https://github.com/azemetre/auteur-palettes",
-    "language": "JavaScript",
-    "fork": false,
-    "private": true,
-    "size": 403
-  },
-  {
-    "name": "boston-typescript-june-2019-talk",
-    "html_url": "https://github.com/azemetre/boston-typescript-june-2019-talk",
-    "language": "TypeScript",
-    "fork": false,
-    "private": false,
-    "size": 3268
-  },
-  {
-    "name": "just",
-    "html_url": "https://github.com/azemetre/just",
-    "language": "JavaScript",
-    "fork": true,
-    "private": false,
-    "size": 12506
-  }
+[
+{
+	"name": "Adv360-Pro-ZMK",
+	"html_url": "https://github.com/azemetre/Adv360-Pro-ZMK",
+	"language": "",
+	"fork": true,
+	"private": false,
+	"size": 145
+},
+	{
+	"name": "auteur-palettes",
+	"html_url": "https://github.com/azemetre/auteur-palettes",
+	"language": "JavaScript",
+	"fork": false,
+	"private": true,
+	"size": 403
+}
 ]
 ```
 
@@ -486,7 +382,7 @@ Running `piscator reel -h` will show all available flags:
 ![running piscator reel -h](./docs/reel-help.gif)
 
 <details>
-  <summary>output of `piscator reel -h`</summary>
+<summary>output of `piscator reel -h`</summary>
 
 ```text
 Avast, ye salty fisherman! Prepare to cast your line with the reel command
@@ -499,19 +395,19 @@ Unleash your fishing prowess, reel in those repositories, and embark on a coding
 voyage like no other.
 
 Usage:
-  piscator reel [flags]
+piscator reel [flags]
 
 Aliases:
-  reel, c
+reel, c
 
 Flags:
-  -x, --forked         Include forked repositories
-  -h, --help           help for reel
-  -f, --makeFile       Generate a repos.json file
-  -o, --org            Is an organization
-  -s, --self           Your GitHub user, requires a personal access token
-  -t, --token string   GitHub personal access token
-  -v, --verbose        logs detailed messaging to stdout
+-x, --forked         Include forked repositories
+-h, --help           help for reel
+-f, --makeFile       Generate a repos.json file
+-o, --org            Is an organization
+-s, --self           Your GitHub user, requires a personal access token
+-t, --token string   GitHub personal access token
+-v, --verbose        logs detailed messaging to stdout
 ```
 
 ---
@@ -528,16 +424,16 @@ Still working on minor changes and features.
 ## [Todos](#todos)
 
 - [x] flesh out readme
-  - [x] create vhs tapes
+- [x] create vhs tapes
 - [x] automate release binaries
 - [ ] release on major package managers
-  - [ ] homebrew
-  - [ ] nix
-  - [ ] fedora
-  - [ ] macports
-  - [ ] arch linux (btw)
-  - [ ] debian
-  - [ ] scoop
+- [ ] homebrew
+- [ ] nix
+- [ ] fedora
+- [ ] macports
+- [ ] arch linux (btw)
+- [ ] debian
+- [ ] scoop
 - [x] add tests
 - [ ] generate man pages
 - [ ] make showcase site
