@@ -84,79 +84,13 @@ guide ye on yer voyage to GitHub riches!
 
 ### [piscator](#piscator)
 
-Running `piscator help` will show the commands of `piscator`
+Running `piscator help` will show the commands of `piscator`. You can also run
+`piscator cast -h` and `piscator reel -h` to see the flags each respective
+command takes.
 
 ![running piscator help](./docs/piscator-help.gif)
 
-<details>
-<summary>output of running `piscator help`</summary>
-
-```text
-Embark on a grand voyage across the GitHub seas! Set sail to create
-a magnificent directory, inspired by the name of a fearless sailor or a
-mighty pirate. With each collection you reel in, a new Git repository shall
-be forged, like a sturdy ship ready to conquer the code oceans. Prepare
-yourself to navigate through the user's or organization's treasures,
-uncovering hidden gems and secret code islands. Will you include private
-repositories, like mysterious hidden coves? Or perhaps venture into the
-realm of forked repositories, tracing the footsteps of fellow sailors? As
-you reel in the collections, a legendary repos.json file shall be forged,
-capturing the essence of your brave expedition. Choose the winds of
-verbosity to whisper tales of each step or keep silent like a true sailor.
-Raise the anchor, set your course, and let the adventure begin!
-
-Usage:
-piscator [flags]
-piscator [command]
-
-Available Commands:
-cast        generate a json struct of GitHub repos
-completion  Generate the autocompletion script for the specified shell
-help        Help about any command
-reel        git clone collected repos
-
-Flags:
--h, --help   help for piscator
-
-Use "piscator [command] --help" for more information about a command.
-```
-
-</details>
-
 ### [cast](#cast)
-
-Running `pisctor cast -h` will show all available flags:
-
-![running piscator cast -h](./docs/cast-help.gif)
-
-<details>
-<summary>output of `piscator cast -h`</summary>
-
-```text
-Ahoy, sailor! Prepare to navigate the GitHub sea and hoist the flag of
-exploration with the cast command. Cast your net wide and capture the URLs of
-repositories belonging to a user or organization, gathering a bountiful
-collection of code treasures. Navigate with ease, discovering new horizons, and
-charting your course towards software mastery.
-
-Usage:
-piscator cast [flags]
-
-Aliases:
-cast, c
-
-Flags:
--x, --forked         Include forked repositories
--h, --help           help for cast
--f, --makeFile       Generate a repos.json file
--o, --org            Is an organization
--s, --self           Your GitHub user, requires a personal access token
--t, --token string   GitHub personal access token
-```
-
-</details>
-
----
 
 Running `piscator cast username` will output a JSON of public repositories
 for a user:
@@ -375,51 +309,10 @@ and create a `repos.json` file:
 if you would like to reel in repos from an organization or yourself it will
 require the same flags and arguments.
 
----
-
-Running `piscator reel -h` will show all available flags:
-
-![running piscator reel -h](./docs/reel-help.gif)
-
-<details>
-<summary>output of `piscator reel -h`</summary>
-
-```text
-Avast, ye salty fisherman! Prepare to cast your line with the reel command
-and embark on a daring fishing expedition in the GitHub waters. As you sail
-through the digital sea, you'll skillfully create a directory that bears the
-name of the user or organization, and with each catch, you'll reel in a precious
-git repository. Like a seasoned fisherman, you'll nurture and cultivate these
-repositories, transforming them into valuable assets for your coding endeavors.
-Unleash your fishing prowess, reel in those repositories, and embark on a coding
-voyage like no other.
-
-Usage:
-piscator reel [flags]
-
-Aliases:
-reel, c
-
-Flags:
--x, --forked         Include forked repositories
--h, --help           help for reel
--f, --makeFile       Generate a repos.json file
--o, --org            Is an organization
--s, --self           Your GitHub user, requires a personal access token
--t, --token string   GitHub personal access token
--v, --verbose        logs detailed messaging to stdout
-```
-
----
-
 Running `piscator reel org_name` create a directory of the user/org and clone
 their repositories:
 
 ![running piscator reel azemetre](./docs/reel-user.gif)
-
----
-
-Still working on minor changes and features.
 
 ## [Todos](#todos)
 
