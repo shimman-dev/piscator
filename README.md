@@ -31,9 +31,6 @@ Table of contents:
 - [Installation](#installation)
 - [Usage](#usage)
 - [Documentation](#documentation)
-  - [piscator](#piscator)
-  - [cast](#cast)
-  - [reel](#reel)
 - [Todos](#todos)
 
 ---
@@ -523,6 +520,10 @@ Running `piscator reel org_name` create a directory of the user/org and clone
 their repositories:
 
 ![running piscator reel azemetre](./docs/reel-user.gif)
+
+---
+
+Still working on minor changes and features.
 
 ## [Todos](#todos)
 
