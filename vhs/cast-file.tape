@@ -12,8 +12,9 @@ Type "piscator cast azemetre -f"
 Enter
 Sleep 8s
 
-Enter 2
-Type "bat repos.json"
+Ctrl+L
+
+Type "ls -l repos.json"
 Enter
 Sleep 8s
 
