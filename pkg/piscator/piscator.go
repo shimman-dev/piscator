@@ -10,6 +10,7 @@ import (
 	"os/exec"
 	"path"
 	"strconv"
+	"strings"
 	"sync"
 	"sync/atomic"
 	"time"
@@ -58,8 +59,12 @@ func (rs RealSleeper) Sleep(d time.Duration) {
 }
 
 // Retrieves repositories of a user/organization/self from GitHub.
-// Optionally filters based on fork status, and returns them as a JSON string or writes to a file.
-func GetRepos(client HttpClient, sleeper Sleeper, name, token string, isSelf, isOrg, isForked, makeFile bool) (string, error) {
+// Optionally filters based on fork status, and returns them as a JSON string or
+// writes to a file.
+//
+// Please note, name represents a GitHub user/org name, while username is
+// intended for enterprise GitHub accounts.
+func GetRepos(client HttpClient, sleeper Sleeper, name, token, username, password, enterpriseHost string, isSelf, isOrg, isForked, makeFile bool) (string, error) {
 	var githubURL string
 
 	gh, err := url.Parse("https://api.github.com/")
@@ -72,6 +77,13 @@ func GetRepos(client HttpClient, sleeper Sleeper, name, token string, isSelf, is
 		gh.Path = path.Join("user", "repos")
 	case isOrg:
 		gh.Path = path.Join("orgs", name, "repos")
+		if username != "" && password != "" {
+			gh.User = url.UserPassword(username, password)
+		}
+		if enterpriseHost != "" {
+			gh.Host = enterpriseHost
+			log.Printf("github host: %s", gh.Host)
+		}
 	default:
 		gh.Path = path.Join("users", name, "repos")
 	}
@@ -169,25 +181,40 @@ func GetRepos(client HttpClient, sleeper Sleeper, name, token string, isSelf, is
 }
 
 // Filters repositories from a JSON string by programming language and returns them as a JSON string.
-func RepoByLanguage(jsonStr string, language string) (string, error) {
+func RepoByLanguage(jsonStr string, languages string) (string, error) {
 	var repos []RepoModel
 	if err := json.Unmarshal([]byte(jsonStr), &repos); err != nil {
 		return "", err
 	}
 
 	filteredRepos := []RepoModel{}
+	filterLanguages := splitLanguages(languages)
+
 	for _, repo := range repos {
-		if repo.Lang == language {
-			filteredRepos = append(filteredRepos, repo)
+		for _, lang := range filterLanguages {
+			if strings.EqualFold(repo.Lang, lang) {
+				filteredRepos = append(filteredRepos, repo)
+				break
+			}
 		}
 	}
 
+	// Marshal filteredRepos into JSON
 	jsonData, err := json.MarshalIndent(filteredRepos, "", "  ")
 	if err != nil {
 		return "", err
 	}
 
 	return string(jsonData), nil
+}
+
+// Split the comma-separated languages
+func splitLanguages(languages string) []string {
+	languageList := strings.Split(languages, ",")
+	for i := 0; i < len(languageList); i++ {
+		languageList[i] = strings.TrimSpace(languageList[i])
+	}
+	return languageList
 }
 
 type CommandExecutor interface {
