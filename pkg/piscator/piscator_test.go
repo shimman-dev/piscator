@@ -858,3 +858,36 @@ func TestCloneReposFromJson(t *testing.T) {
 
 	}
 }
+
+func TestIsSSHURL(t *testing.T) {
+	tests := []struct {
+		name     string
+		url      string
+		expected bool
+	}{
+		{
+			name:     "SSH URL",
+			url:      "ssh://github.com/user/repo",
+			expected: true,
+		},
+		{
+			name:     "HTTP URL",
+			url:      "http://github.com/user/repo",
+			expected: false,
+		},
+		{
+			name:     "Invalid URL",
+			url:      "invalid-url",
+			expected: false,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := isSSHURL(tt.url)
+			if got != tt.expected {
+				t.Errorf("Expected %v, got %v", tt.expected, got)
+			}
+		})
+	}
+}

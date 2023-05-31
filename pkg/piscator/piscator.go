@@ -209,7 +209,7 @@ func (r RealCommandExecutor) ExecuteCommandInDir(dir, name string, arg ...string
 }
 
 // Clones GitHub repositories from a JSON string concurrently, updates if they already exist, and logs progress.
-func CloneReposFromJson(executor CommandExecutor, jsonStr, name string, concurrentLimit int8, verboseLog bool) error {
+func CloneReposFromJson(executor CommandExecutor, jsonStr, dirName string, concurrentLimit int8, verboseLog bool) error {
 	// unmarshal the JSON string into a slice of Repo structs
 	var repos []Repo
 	if err := json.Unmarshal([]byte(jsonStr), &repos); err != nil {
@@ -217,7 +217,7 @@ func CloneReposFromJson(executor CommandExecutor, jsonStr, name string, concurre
 	}
 
 	// create a directory for repos if it doesn't already exist
-	dir := name
+	dir := dirName
 	if _, err := os.Stat(dir); os.IsNotExist(err) {
 		if err := os.Mkdir(dir, 0755); err != nil {
 			return fmt.Errorf("error creating directory: %w", err)
@@ -248,7 +248,13 @@ func CloneReposFromJson(executor CommandExecutor, jsonStr, name string, concurre
 			var err error
 			if _, err := os.Stat(repoPath); os.IsNotExist(err) {
 				// repo doesn't exist, clone it
-				cmdOut, err = executor.ExecuteCommand("git", "clone", repo.URL, repoPath)
+				cloneCmd := []string{"git", "clone"}
+				if isSSHURL(repo.URL) {
+					cloneCmd = append(cloneCmd, "--ssh")
+				}
+				cloneCmd = append(cloneCmd, repo.URL, repoPath)
+				cmdOut, err = executor.ExecuteCommand(cloneCmd[0], cloneCmd[1:]...)
+
 				if err != nil {
 					errors <- fmt.Errorf("error cloning repo: %w", err) // Send error to channel
 					return
@@ -294,4 +300,13 @@ func CloneReposFromJson(executor CommandExecutor, jsonStr, name string, concurre
 	s.Stop()
 	fmt.Printf("Cloned %d repos\n", len(repos))
 	return nil
+}
+
+// Checks if the URL is using the SSH scheme
+func isSSHURL(urlStr string) bool {
+	u, err := url.Parse(urlStr)
+	if err != nil {
+		return false
+	}
+	return u.Scheme == "ssh"
 }
