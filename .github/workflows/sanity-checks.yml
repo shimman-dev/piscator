@@ -39,7 +39,9 @@ jobs:
 
       - name: Print coverage report
         id: gocoverage
+        env:
+          COVERAGE_FILE: coverage.txt
         run: |
-          go tool cover -func=coverage.out > coverage.txt
-          coverage=$(cat coverage.txt)
+          go tool cover -func=coverage.out > ${{ env.COVERAGE_FILE }}
+          coverage=$(cat ${{ env.COVERAGE_FILE }})
           echo "::set-output name=coverage::$coverage"
