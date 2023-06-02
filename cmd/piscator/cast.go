@@ -73,7 +73,7 @@ func init() {
 	castCmd.PersistentFlags().StringVarP(&password, "password", "p", "", "GitHub password")
 	castCmd.PersistentFlags().StringVarP(&enterprise, "enterprise", "e", "", "GitHub Enterprise URL")
 
-	// bind the token flag to a env keys
+	// bind the token flags to env keys
 	viper.BindPFlag("github_token", castCmd.PersistentFlags().Lookup("token"))
 	viper.BindPFlag("username", castCmd.PersistentFlags().Lookup("username"))
 	viper.BindPFlag("password", castCmd.PersistentFlags().Lookup("password"))

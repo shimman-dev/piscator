@@ -77,7 +77,7 @@ voyage like no other.`,
 }
 
 func init() {
-	viper.AutomaticEnv() // automatically use environment variables
+	viper.AutomaticEnv()
 
 	reelCmd.PersistentFlags().BoolVarP(&isSelfBool, "self", "s", false, "Your GitHub user, requires a personal access token")
 	reelCmd.PersistentFlags().BoolVarP(&isOrgBool, "org", "o", false, "Is an organization")
@@ -92,7 +92,7 @@ func init() {
 	reelCmd.PersistentFlags().StringVarP(&password, "password", "p", "", "GitHub password")
 	reelCmd.PersistentFlags().StringVarP(&enterprise, "enterprise", "e", "", "GitHub Enterprise URL")
 
-	// bind the token flag to a env keys
+	// bind the token flags to env keys
 	viper.BindPFlag("github_token", castCmd.PersistentFlags().Lookup("token"))
 	viper.BindPFlag("username", castCmd.PersistentFlags().Lookup("username"))
 	viper.BindPFlag("password", castCmd.PersistentFlags().Lookup("password"))
