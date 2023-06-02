@@ -42,4 +42,4 @@ jobs:
         run: |
           go tool cover -func=coverage.out > coverage.txt
           coverage=$(cat coverage.txt)
-          echo "::set-output name=coverage::$coverage"
+          export coverage="$coverage"
