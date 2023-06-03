@@ -37,9 +37,9 @@ jobs:
       - name: Test
         run: go test -v -coverprofile=coverage.out ./...
 
-      - name: Print coverage report
+      - name: Collect coverage report
         id: gocoverage
         run: |
           go tool cover -func=coverage.out > coverage.txt
           coverage=$(cat coverage.txt)
-          export coverage="$coverage"
+          echo "$coverage"
