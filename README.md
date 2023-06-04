@@ -324,6 +324,50 @@ and create a `repos.json` file:
 
 ![running piscator cast azemetre -x](./docs/cast-file.gif)
 
+---
+
+Running `piscator cast username --language=rust,lua` will output a JSON of
+public repositories filtered by the languages you provide (comma separated) for
+a user:
+
+![running piscator cast azemetre -l rust,lua](./docs/cast-lang.gif)
+
+<details>
+<summary>example output of `piscator cast azemetre -l rust,lua`</summary>
+
+```text
+[
+  {
+    "name": "dotfiles",
+    "html_url": "https://github.com/azemetre/dotfiles",
+    "language": "Lua",
+    "fork": false,
+    "private": false,
+    "size": 2756
+  },
+  {
+    "name": "hipster.nvim",
+    "html_url": "https://github.com/azemetre/hipster.nvim",
+    "language": "Lua",
+    "fork": false,
+    "private": false,
+    "size": 1446
+  },
+  {
+    "name": "rust-solutions",
+    "html_url": "https://github.com/azemetre/rust-solutions",
+    "language": "Rust",
+    "fork": false,
+    "private": false,
+    "size": 47234
+  }
+]
+```
+
+</details>
+
+---
+
 ### [reel](#reels)
 
 **Please note:** `piscator reel` can take the same flags as `piscator cast`, so
@@ -337,7 +381,7 @@ their repositories:
 
 ## [Todos](#todos)
 
-- [ ] add ability to filter by language
+- [x] add ability to filter by language
 - [x] flesh out readme
   - [x] create vhs tapes
 - [x] automate release binaries
