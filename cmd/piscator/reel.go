@@ -102,4 +102,5 @@ func init() {
 	viper.BindEnv("password", "GITHUB_PASSWORD")
 
 	rootCmd.AddCommand(reelCmd)
+	reelCmd.AddCommand(generateManCmd)
 }
