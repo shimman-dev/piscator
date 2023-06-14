@@ -381,6 +381,8 @@ their repositories:
 
 ## [Todos](#todos)
 
+[I'm waiting for it, waiting for it](https://www.youtube.com/watch?v=MGhOfAengqM#t=2m49s)
+
 - [x] add ability to filter by language
 - [x] flesh out readme
   - [x] create vhs tapes
@@ -394,5 +396,5 @@ their repositories:
   - [ ] debian
   - [ ] scoop
 - [x] add tests
-- [ ] generate man pages
+- [x] generate man pages
 - [ ] make showcase site
