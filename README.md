@@ -28,15 +28,15 @@ open seas of code.
 
 Table of contents:
 
-- [Installation](#installation)
-  - [homebrew](#homebrew)
+- [Rough Seas](#seas)
+  - [Installation](#installation)
 - [Usage](#usage)
 - [Documentation](#documentation)
 - [Todos](#todos)
 
 ---
 
-## [Installation](#installation)
+## [Rough Seas](#seas)
 
 Although the current [releases](https://github.com/shimman-dev/piscator/releases)
 page offers binaries for Linux, MacOS, and Windows, rest assured that I have
@@ -50,25 +50,31 @@ So, my dear crew, hold tight to the mast and keep your hearts filled with hope.
 In the near future, ye shall witness the expansion of piscator's reach, as it
 sets sail on the vast seas of package managers, bringing ye the treasures of
 effortless installation and seamless updates. Trust in me, your captain, for I
-am dedicated to improving the voyage of piscator and ensuring that every sailor
+am dedicated to improving the voyage of `piscator` and ensuring that every sailor
 can embark on their coding adventures with the wind at their backs.
 
 Together, we shall overcome this minor setback and forge ahead toward a
-brighter future for piscator. Ye are the lifeblood of this crew, and I am
+brighter future for `piscator`. Ye are the lifeblood of this crew, and I am
 grateful for your unwavering support. May our sails be filled with the winds of
 progress, as we navigate the ever-changing tides of technology. Onward, my
 brave crew, for the best is yet to come!
 
-#### [homebrew](#homebrew)
+### [Installation](#installation)
 
 Ahoy, mateys! I bring tidings of great joy for all ye sailors out there. We've
-finally hoisted the Jolly Roger and released our very own Homebrew package for
-the mighty piscator! Avast, ye scurvy dogs, and follow these simple steps to
-get the piscator CLT installed on yer ship:
+finally hoisted the Jolly Roger and released our very own [Homebrew tap](https://github.com/shimman-dev/homebrew-taps)
+and [Scoop bucket](https://github.com/shimman-dev/scoop-bucket) for the mighty `piscator`! Avast, ye
+scurvy dogs, and follow these simple steps to get the `piscator` CLT installed
+on yer ship:
 
 ```shell
+# homebrew
 brew tap shimman-dev/taps
 brew install piscator
+
+# scoop
+scoop bucket add shimman-dev https://github.com/shimman-dev/scoop-bucket.git
+scoop install piscator
 ```
 
 Arr, ye be all set now! The piscator CLT be installed and ready to sail the
@@ -394,7 +400,7 @@ their repositories:
   - [ ] macports
   - [ ] arch linux (btw)
   - [ ] debian
-  - [ ] scoop
+  - [x] scoop
 - [x] add tests
 - [x] generate man pages
 - [ ] make showcase site
