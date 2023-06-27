@@ -3,6 +3,7 @@ package piscator
 import (
 	"fmt"
 	"net/http"
+	"os"
 
 	"github.com/shimman-dev/piscator/pkg/piscator"
 	"github.com/spf13/cobra"
@@ -33,17 +34,18 @@ func reelRun(cmd *cobra.Command, args []string) {
 
 	sleeper := &piscator.RealSleeper{}
 
-	res, err := piscator.GetRepos(http.DefaultClient, sleeper, name, tokenFileBool, username, password, enterprise, isSelfBool, isOrgBool, isForkedBool, makeFileBool)
+	res, err := piscator.GetRepos(http.DefaultClient, sleeper, name, tokenFileBool, username, password, enterprise, team, isSelfBool, isOrgBool, isForkedBool, makeFileBool)
+
 	if err != nil {
 		fmt.Printf("Errors: %s", err)
-		return
+		os.Exit(1)
 	}
 
 	if languageFilter != "" {
 		res, err = piscator.RepoByLanguage(res, languageFilter)
 		if err != nil {
 			fmt.Printf("Error filtering repositories by language: %s", err)
-			return
+			os.Exit(1)
 		}
 	}
 
@@ -54,10 +56,10 @@ func reelRun(cmd *cobra.Command, args []string) {
 
 	if err != nil {
 		fmt.Printf("Errors: %s", err)
-		return
+		os.Exit(1)
 	}
 
-	fmt.Println("success friend :)")
+	os.Exit(0)
 }
 
 var reelCmd = &cobra.Command{

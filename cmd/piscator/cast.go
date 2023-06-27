@@ -3,6 +3,7 @@ package piscator
 import (
 	"fmt"
 	"net/http"
+	"os"
 
 	"github.com/shimman-dev/piscator/pkg/piscator"
 	"github.com/spf13/cobra"
@@ -10,7 +11,7 @@ import (
 )
 
 var isSelfBool, isOrgBool, isForkedBool, makeFileBool bool
-var languageFilter, name, githubToken, username, password, enterprise string
+var languageFilter, name, githubToken, username, password, enterprise, team string
 
 func castRun(cmd *cobra.Command, args []string) {
 	if len(args) < 1 {
@@ -27,18 +28,18 @@ func castRun(cmd *cobra.Command, args []string) {
 
 	sleeper := &piscator.RealSleeper{}
 
-	res, err := piscator.GetRepos(http.DefaultClient, sleeper, name, tokenFileBool, username, password, enterprise, isSelfBool, isOrgBool, isForkedBool, makeFileBool)
+	res, err := piscator.GetRepos(http.DefaultClient, sleeper, name, tokenFileBool, username, password, enterprise, team, isSelfBool, isOrgBool, isForkedBool, makeFileBool)
 
 	if err != nil {
-		fmt.Printf("Errors: %s", err)
-		return
+		fmt.Printf("Error getting repos: %s\n", err)
+		os.Exit(1)
 	}
 
 	if languageFilter != "" {
 		res, err = piscator.RepoByLanguage(res, languageFilter)
 		if err != nil {
-			fmt.Printf("Error filtering repositories by language: %s", err)
-			return
+			fmt.Printf("Error filtering repositories by language: %s\n", err)
+			os.Exit(1)
 		}
 	}
 
@@ -72,6 +73,7 @@ func init() {
 	castCmd.PersistentFlags().StringVarP(&username, "username", "u", "", "GitHub username")
 	castCmd.PersistentFlags().StringVarP(&password, "password", "p", "", "GitHub password")
 	castCmd.PersistentFlags().StringVarP(&enterprise, "enterprise", "e", "", "GitHub Enterprise URL")
+	castCmd.PersistentFlags().StringVarP(&team, "team", "t", "", "Retrieve repositories based on team")
 
 	// bind the token flags to env keys
 	viper.BindPFlag("github_token", castCmd.PersistentFlags().Lookup("token"))
