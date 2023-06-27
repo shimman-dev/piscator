@@ -64,7 +64,7 @@ func (rs RealSleeper) Sleep(d time.Duration) {
 //
 // Please note, name represents a GitHub user/org name, while username is
 // intended for enterprise GitHub accounts.
-func GetRepos(client HttpClient, sleeper Sleeper, name, token, username, password, enterpriseHost string, isSelf, isOrg, isForked, makeFile bool) (string, error) {
+func GetRepos(client HttpClient, sleeper Sleeper, name, token, username, password, enterpriseHost, team string, isSelf, isOrg, isForked, makeFile bool) (string, error) {
 	var githubURL string
 
 	gh, err := url.Parse("https://api.github.com/")
@@ -76,13 +76,16 @@ func GetRepos(client HttpClient, sleeper Sleeper, name, token, username, passwor
 	case isSelf:
 		gh.Path = path.Join("user", "repos")
 	case isOrg:
-		gh.Path = path.Join("orgs", name, "repos")
+		if team != "" {
+			gh.Path = path.Join("organizations", name, "teams", team, "repos")
+		} else {
+			gh.Path = path.Join("orgs", name, "repos")
+		}
 		if username != "" && password != "" {
 			gh.User = url.UserPassword(username, password)
 		}
 		if enterpriseHost != "" {
 			gh.Host = enterpriseHost
-			log.Printf("github host: %s", gh.Host)
 		}
 	default:
 		gh.Path = path.Join("users", name, "repos")
@@ -91,12 +94,13 @@ func GetRepos(client HttpClient, sleeper Sleeper, name, token, username, passwor
 	params := url.Values{}
 	params.Add("per_page", "1000")
 	githubURL = gh.String() + "?" + params.Encode()
+	log.Printf("githubURL: %s", githubURL)
 
 	var res *http.Response
 	for i := 0; i < 3; i++ {
 		req, err := http.NewRequest("GET", githubURL, nil)
 		if err != nil {
-			log.Fatalf("Error creating request: %v", err)
+			return "", fmt.Errorf("failed to get repos after 3 attempts")
 		}
 		req.Header.Set("User-Agent", "shimman-dev/piscator")
 		if token != "" {
