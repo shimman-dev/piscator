@@ -392,6 +392,8 @@ their repositories:
 - [x] add ability to filter by language
 - [x] flesh out readme
   - [x] create vhs tapes
+  - [ ] add `CONTRIBUTING.md`
+  - [ ] refine github templates
 - [x] automate release binaries
 - [ ] release on major package managers
   - [x] homebrew
